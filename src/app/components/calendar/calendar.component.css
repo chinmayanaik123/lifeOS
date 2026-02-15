@@ -1,0 +1,115 @@
+.calendar-container {
+    padding: 16px;
+    background-color: #121212;
+    height: 100%;
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.calendar-header h2 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: #ffffff;
+    font-weight: 500;
+}
+
+.nav-btn {
+    background: transparent;
+    border: none;
+    color: #4CAF50;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 8px;
+}
+
+.weekdays-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    margin-bottom: 8px;
+    text-align: center;
+}
+
+.weekday {
+    color: #888;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    font-weight: 500;
+}
+
+.days-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+}
+
+.day-cell {
+    aspect-ratio: 1;
+    background-color: #1e1e1e;
+    border-radius: 8px;
+    padding: 4px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.day-cell:active {
+    background-color: #2d2d2d;
+}
+
+.day-number {
+    font-size: 0.9rem;
+    color: #e0e0e0;
+    text-align: right;
+    margin-right: 4px;
+}
+
+.indicators {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+}
+
+.task-dots {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: #555;
+    /* Pending */
+}
+
+.dot.partial {
+    background-color: #ff9800;
+}
+
+.dot.completed {
+    background-color: #4CAF50;
+}
+
+.task-count {
+    font-size: 0.6rem;
+    color: #888;
+}
+
+.icons {
+    display: flex;
+    gap: 2px;
+    font-size: 0.7rem;
+}
+
+.streak-broken {
+    color: #f44336;
+}

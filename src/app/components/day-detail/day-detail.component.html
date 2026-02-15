@@ -1,0 +1,32 @@
+<div class="day-detail-container">
+    <header class="detail-header">
+        <button (click)="goBack()" class="back-btn">❮ Back</button>
+        <h2>{{ date | date:'fullDate' }}</h2>
+    </header>
+
+    <div class="task-list">
+        <div *ngIf="tasks().length === 0" class="empty-state">
+            <p>No tasks for today. Enjoy! 🎉</p>
+        </div>
+
+        <div *ngFor="let taskView of tasks()" class="task-item" [class.completed]="isCompleted(taskView)"
+            (click)="toggleTask(taskView)">
+
+            <div class="checkbox">
+                <span *ngIf="isCompleted(taskView)">✓</span>
+            </div>
+
+            <div class="task-content">
+                <div class="task-title">{{ taskView.task.title }}</div>
+                <div class="task-meta">
+                    <span *ngIf="taskView.task.priority" class="priority-tag" [ngClass]="taskView.task.priority">
+                        {{ taskView.task.priority }}
+                    </span>
+                    <span *ngIf="taskView.currentStreak" class="streak-tag">
+                        🔥 {{ taskView.currentStreak }}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,36 @@
+<div class="calendar-container">
+    <header class="calendar-header">
+        <button (click)="previousMonth()" class="nav-btn">❮</button>
+        <h2>{{ currentMonthName() }}</h2>
+        <button (click)="nextMonth()" class="nav-btn">❯</button>
+    </header>
+
+    <div class="weekdays-grid">
+        <div *ngFor="let day of weekDays" class="weekday">{{ day }}</div>
+    </div>
+
+    <div class="days-grid">
+        <div *ngFor="let empty of getEmptyCells()" class="day-cell empty"></div>
+        <div *ngFor="let day of calendarData()" class="day-cell" (click)="onDayClick(day.date)">
+            <div class="day-number">{{ day.date | date:'d' }}</div>
+
+            <div class="indicators">
+                <!-- Task Dots -->
+                <div class="task-dots" *ngIf="day.tasksTotal > 0">
+                    <div class="dot" [class.completed]="day.tasksCompleted === day.tasksTotal"
+                        [class.partial]="day.tasksCompleted > 0 && day.tasksCompleted < day.tasksTotal">
+                    </div>
+                    <span class="task-count" *ngIf="day.tasksTotal > 0">{{ day.tasksCompleted }}/{{ day.tasksTotal
+                        }}</span>
+                </div>
+
+                <!-- Other Icons -->
+                <div class="icons">
+                    <span *ngIf="day.streakBroken" class="streak-broken" title="Streak Broken">⚡</span>
+                    <span *ngIf="day.hasFinanceEntry" class="finance" title="Finance Entry">💰</span>
+                    <span *ngIf="day.hasNote" class="note" title="Note">📝</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
