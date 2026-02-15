@@ -1,4 +1,64 @@
-<div style="padding: 20px; color: #fff;">
-    <h2>Settings</h2>
-    <p>Coming soon...</p>
+<div class="settings-container">
+    <header class="header">
+        <h1>Settings</h1>
+    </header>
+
+    <div class="settings-group">
+        <div class="group-header">
+            <span class="icon">📍</span>
+            <h3>Current Location</h3>
+        </div>
+        <div class="location-selector">
+            <button *ngFor="let loc of locationOptions" class="location-chip"
+                [class.active]="settingsRepo.settings().currentLocation === loc.value"
+                (click)="updateLocation(loc.value)">
+                <span class="loc-icon">{{ loc.icon }}</span>
+                <span class="loc-label">{{ loc.label }}</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="settings-group">
+        <div class="group-header">
+            <span class="icon">⚙️</span>
+            <h3>Preferences</h3>
+        </div>
+
+        <div class="setting-item">
+            <div class="setting-info">
+                <span class="setting-label">Finance Tracking</span>
+                <span class="setting-desc">Show finance indicators on calendar</span>
+            </div>
+            <label class="switch">
+                <input type="checkbox" [checked]="settingsRepo.settings().financeEnabled" (change)="toggleFinance()">
+                <span class="slider round"></span>
+            </label>
+        </div>
+
+        <div class="setting-item">
+            <div class="setting-info">
+                <span class="setting-label">Morning Alarm</span>
+                <span class="setting-desc">Enable morning routine alerts</span>
+            </div>
+            <label class="switch">
+                <input type="checkbox" [checked]="settingsRepo.settings().morningAlarmEnabled"
+                    (change)="toggleMorningAlarm()">
+                <span class="slider round"></span>
+            </label>
+        </div>
+
+        <div class="setting-item input-item">
+            <div class="setting-info">
+                <span class="setting-label">Default Reminder</span>
+                <span class="setting-desc">Time for daily task reminders</span>
+            </div>
+            <input type="time" [value]="settingsRepo.settings().defaultReminderTime"
+                (change)="updateReminderTime($event)" class="time-input">
+        </div>
+    </div>
+
+    <div class="settings-footer">
+        <button class="reset-btn" (click)="resetSettings()">Reset to Defaults</button>
+        <p class="version">LifeOS v0.6.0</p>
+    </div>
 </div>

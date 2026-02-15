@@ -103,14 +103,16 @@ export class CalendarAggregationService {
         // Create instance map for quick lookup
         const instanceMap = new Map(instances.map(i => [i.taskId, i]));
 
-        // Count completed tasks
+        // Count completed tasks and build task views
         let tasksCompleted = 0;
         let streakBroken = false;
+        const taskViews: any[] = []; // using any temporarily to avoid import issues if models not updated yet, but ideally typed
 
         for (const task of locationFilteredTasks) {
             const instance = instanceMap.get(task.id);
+            const isCompleted = instance && instance.status === 'completed';
 
-            if (instance && instance.status === 'completed') {
+            if (isCompleted) {
                 tasksCompleted++;
             } else if (task.streakEnabled) {
                 // Check if streak was broken
@@ -119,6 +121,17 @@ export class CalendarAggregationService {
                     streakBroken = true;
                 }
             }
+
+            // Add to task views
+            taskViews.push({
+                id: instance?.id || `${task.id}_${date}`,
+                taskId: task.id,
+                date: date,
+                status: instance?.status || 'pending',
+                task: task,
+                completedAt: instance?.completedAt,
+                value: instance?.value
+            });
         }
 
         // Generate icons
@@ -138,6 +151,7 @@ export class CalendarAggregationService {
             hasFinanceEntry: hasFinance,
             streakBroken,
             icons,
+            tasks: taskViews
         };
     }
 

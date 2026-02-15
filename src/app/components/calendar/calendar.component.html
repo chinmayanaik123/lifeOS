@@ -11,17 +11,18 @@
 
     <div class="days-grid">
         <div *ngFor="let empty of getEmptyCells()" class="day-cell empty"></div>
-        <div *ngFor="let day of calendarData()" class="day-cell" (click)="onDayClick(day.date)">
+        <div *ngFor="let day of calendarData()" class="day-cell" [class.today]="isToday(day.date)"
+            [class.weekend]="isWeekend(day.date)"
+            [class.fully-completed]="day.tasksTotal > 0 && day.tasksCompleted === day.tasksTotal"
+            (click)="onDayClick(day.date)">
             <div class="day-number">{{ day.date | date:'d' }}</div>
 
             <div class="indicators">
                 <!-- Task Dots -->
-                <div class="task-dots" *ngIf="day.tasksTotal > 0">
-                    <div class="dot" [class.completed]="day.tasksCompleted === day.tasksTotal"
-                        [class.partial]="day.tasksCompleted > 0 && day.tasksCompleted < day.tasksTotal">
+                <div class="task-dots" *ngIf="day.tasks.length > 0">
+                    <div *ngFor="let task of day.tasks" class="dot" [class.completed]="task.status === 'completed'"
+                        [title]="task.task.title" (click)="toggleTask(task, $event)">
                     </div>
-                    <span class="task-count" *ngIf="day.tasksTotal > 0">{{ day.tasksCompleted }}/{{ day.tasksTotal
-                        }}</span>
                 </div>
 
                 <!-- Other Icons -->

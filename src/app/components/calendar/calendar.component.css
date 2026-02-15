@@ -2,29 +2,31 @@
     padding: 16px;
     background-color: #121212;
     height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .calendar-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 24px;
+    margin-bottom: 16px;
 }
 
 .calendar-header h2 {
-    margin: 0;
     font-size: 1.2rem;
-    color: #ffffff;
     font-weight: 500;
+    margin: 0;
+    color: #ffffff;
 }
 
 .nav-btn {
     background: transparent;
     border: none;
-    color: #4CAF50;
-    font-size: 1.5rem;
-    cursor: pointer;
+    color: #ffffff;
+    font-size: 1.2rem;
     padding: 8px;
+    cursor: pointer;
 }
 
 .weekdays-grid {
@@ -35,81 +37,118 @@
 }
 
 .weekday {
-    color: #888;
     font-size: 0.8rem;
-    text-transform: uppercase;
+    color: #888;
     font-weight: 500;
 }
 
 .days-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 8px;
+    gap: 4px;
+    /* Small gap between cells */
+    flex: 1;
 }
+
+/* ... existing styles ... */
 
 .day-cell {
-    aspect-ratio: 1;
     background-color: #1e1e1e;
     border-radius: 8px;
+    min-height: 80px;
+    display: flex;
+    flex-direction: column;
     padding: 4px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
     cursor: pointer;
-    transition: background-color 0.2s;
+    position: relative;
+    border: 1px solid transparent;
+    /* Prepare for border transition */
+    transition: all 0.2s ease-in-out;
 }
 
-.day-cell:active {
-    background-color: #2d2d2d;
+/* Weekend Styling */
+.day-cell.weekend {
+    background-color: #181818;
+    /* Slightly darker/different */
 }
 
-.day-number {
-    font-size: 0.9rem;
-    color: #e0e0e0;
-    text-align: right;
-    margin-right: 4px;
+/* Today Highlight */
+.day-cell.today {
+    background-color: #2a2a2a;
+    border-color: #bb86fc;
+    /* Accent color border */
+    box-shadow: 0 0 8px rgba(187, 134, 252, 0.2);
 }
 
-.indicators {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2px;
+.day-cell.today .day-number {
+    color: #bb86fc;
+    font-weight: 700;
 }
 
-.task-dots {
-    display: flex;
-    align-items: center;
-    gap: 4px;
+/* Fully Completed Glow */
+.day-cell.fully-completed {
+    border-color: rgba(76, 175, 80, 0.5);
+    background: linear-gradient(135deg, #1e1e1e 0%, #233023 100%);
+    box-shadow: 0 0 10px rgba(76, 175, 80, 0.15);
 }
 
+/* Streak Broken Indicator */
+.streak-broken {
+    color: #ff5252;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.6;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+/* Task Completion Animation */
 .dot {
-    width: 6px;
-    height: 6px;
+    /* ... existing structure ... */
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
-    background-color: #555;
-    /* Pending */
-}
-
-.dot.partial {
-    background-color: #ff9800;
+    background-color: #333;
+    border: 1px solid #555;
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), background-color 0.2s;
+    cursor: pointer;
 }
 
 .dot.completed {
     background-color: #4CAF50;
+    border-color: #4CAF50;
+    animation: pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.task-count {
-    font-size: 0.6rem;
-    color: #888;
+@keyframes pop {
+    0% {
+        transform: scale(0.8);
+    }
+
+    50% {
+        transform: scale(1.4);
+    }
+
+    100% {
+        transform: scale(1);
+    }
 }
 
 .icons {
     display: flex;
-    gap: 2px;
-    font-size: 0.7rem;
-}
-
-.streak-broken {
-    color: #f44336;
+    gap: 4px;
+    justify-content: flex-end;
+    margin-top: auto;
+    font-size: 0.75rem;
+    padding-right: 2px;
 }

@@ -1,4 +1,83 @@
-<div style="padding: 20px; color: #fff;">
-    <h2>Add Task</h2>
-    <p>Coming soon...</p>
+<div class="add-task-container">
+    <header class="header">
+        <button (click)="goBack()" class="cancel-btn">Cancel</button>
+        <h2>New Task</h2>
+        <span class="spacer"></span>
+        <!-- Placeholder for symmetry -->
+    </header>
+
+    <form [formGroup]="taskForm" (ngSubmit)="onSubmit()" class="task-form">
+        <!-- Title -->
+        <div class="form-group">
+            <input type="text" formControlName="title" placeholder="Task Title" class="title-input" />
+        </div>
+
+        <!-- Type -->
+        <div class="form-group">
+            <label>Type</label>
+            <div class="type-selector">
+                <label class="radio-label">
+                    <input type="radio" formControlName="type" value="checkbox">
+                    <span>Checkbox</span>
+                </label>
+                <label class="radio-label">
+                    <input type="radio" formControlName="type" value="counter">
+                    <span>Counter</span>
+                </label>
+                <!-- Adding placeholders for other types if needed -->
+            </div>
+        </div>
+
+        <!-- Recurrence -->
+        <div class="form-group">
+            <label>Recurrence</label>
+            <select formControlName="recurrenceType" class="select-input">
+                <option value="once">Once</option>
+                <option value="daily">Daily</option>
+                <option value="weekly">Weekly</option>
+                <option value="monthly">Monthly</option>
+            </select>
+        </div>
+
+        <!-- Days Selection (Weekly) -->
+        <div class="form-group" *ngIf="taskForm.get('recurrenceType')?.value === 'weekly'">
+            <label>Days</label>
+            <div class="days-grid">
+                <div *ngFor="let day of weekDays" class="day-toggle" [class.selected]="isDaySelected(day.value)"
+                    (click)="toggleDay(day.value)">
+                    {{ day.label }}
+                </div>
+            </div>
+        </div>
+
+        <!-- Location -->
+        <div class="form-group">
+            <label>Location (Optional)</label>
+            <select formControlName="location" class="select-input">
+                <option value="">Anywhere</option>
+                <option value="home">Home</option>
+                <option value="office">Office</option>
+                <option value="gym">Gym</option>
+            </select>
+        </div>
+
+        <!-- Reminder -->
+        <div class="form-group">
+            <label>Reminder (Optional)</label>
+            <input type="time" formControlName="reminderTime" class="time-input">
+        </div>
+
+        <!-- Streak -->
+        <div class="form-group switch-group">
+            <label>Track Streak</label>
+            <label class="switch">
+                <input type="checkbox" formControlName="streakEnabled">
+                <span class="slider round"></span>
+            </label>
+        </div>
+
+        <button type="submit" [disabled]="!isValid || isSaving()" class="save-btn">
+            {{ isSaving() ? 'Saving...' : 'Save Task' }}
+        </button>
+    </form>
 </div>

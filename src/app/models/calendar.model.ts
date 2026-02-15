@@ -1,3 +1,5 @@
+import { TaskInstanceView } from './task.model';
+
 /**
  * Aggregated view of a single day in the calendar
  */
@@ -14,6 +16,8 @@ export interface CalendarDayView {
     hasFinanceEntry: boolean;
     /** Whether any streak was broken on this day */
     streakBroken: boolean;
+    /** List of tasks for this day (for quick completion) */
+    tasks: TaskInstanceView[];
     /** Visual indicator icons for the day */
     icons: string[];
 }
