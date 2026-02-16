@@ -1,21 +1,35 @@
 .calendar-container {
-    padding: 16px;
+    padding: 8px 16px 0 16px;
     background-color: #121212;
     height: 100%;
+    /* Take 100% of parent .content (which is now scrollable, but we want this to be exactly its size) */
     display: flex;
     flex-direction: column;
+    overflow: hidden;
+    /* Keep its own scrollable-content */
+    box-sizing: border-box;
+}
+
+.scrollable-content {
+    flex: 0 1 auto;
+    /* Take only what's needed, can shrink */
+    overflow-y: auto;
+    min-height: 0;
+    margin-bottom: 8px;
 }
 
 .calendar-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 16px;
+    margin-bottom: 12px;
+    /* Reduced margin */
 }
 
 .calendar-header h2 {
-    font-size: 1.2rem;
-    font-weight: 500;
+    font-size: 1.1rem;
+    /* Slightly smaller */
+    font-weight: 600;
     margin: 0;
     color: #ffffff;
 }
@@ -24,60 +38,73 @@
     background: transparent;
     border: none;
     color: #ffffff;
-    font-size: 1.2rem;
-    padding: 8px;
+    font-size: 1.1rem;
+    padding: 6px;
     cursor: pointer;
 }
 
+/* Weekdays */
 .weekdays-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    margin-bottom: 8px;
+    margin-bottom: 4px;
+    /* Tighter */
     text-align: center;
 }
 
 .weekday {
-    font-size: 0.8rem;
-    color: #888;
+    font-size: 0.75rem;
+    /* Smaller */
+    color: #666;
+    /* Dimmer */
     font-weight: 500;
+    text-transform: uppercase;
 }
 
+/* Days Grid */
 .days-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 4px;
-    /* Small gap between cells */
+    grid-template-rows: repeat(6, 1fr);
+    /* Force 6 rows */
+    gap: 3px;
+    /* Slightly wider than 2px for better separation in dense grid */
     flex: 1;
+    /* Grow to fill available space */
+    min-height: 0;
+    /* Important for flex child to shrink */
 }
-
-/* ... existing styles ... */
 
 .day-cell {
     background-color: #1e1e1e;
-    border-radius: 8px;
-    min-height: 80px;
+    border-radius: 4px;
+    /* Shaper corner for density */
     display: flex;
     flex-direction: column;
     padding: 4px;
     cursor: pointer;
     position: relative;
     border: 1px solid transparent;
-    /* Prepare for border transition */
     transition: all 0.2s ease-in-out;
+    min-width: 0;
+    /* Prevent content-based expansion */
+}
+
+.day-cell.empty {
+    background-color: transparent;
+    cursor: default;
 }
 
 /* Weekend Styling */
 .day-cell.weekend {
     background-color: #181818;
-    /* Slightly darker/different */
 }
 
 /* Today Highlight */
 .day-cell.today {
-    background-color: #2a2a2a;
+    background-color: #252525;
     border-color: #bb86fc;
-    /* Accent color border */
-    box-shadow: 0 0 8px rgba(187, 134, 252, 0.2);
+    box-shadow: inset 0 0 4px rgba(187, 134, 252, 0.2);
 }
 
 .day-cell.today .day-number {
@@ -87,68 +114,58 @@
 
 /* Fully Completed Glow */
 .day-cell.fully-completed {
-    border-color: rgba(76, 175, 80, 0.5);
-    background: linear-gradient(135deg, #1e1e1e 0%, #233023 100%);
-    box-shadow: 0 0 10px rgba(76, 175, 80, 0.15);
+    border-color: rgba(76, 175, 80, 0.4);
+    background: linear-gradient(135deg, #1e1e1e 0%, #1e251e 100%);
 }
 
-/* Streak Broken Indicator */
-.streak-broken {
-    color: #ff5252;
-    animation: pulse 2s infinite;
+.day-number {
+    font-size: 0.8rem;
+    /* Smaller font */
+    color: #888;
+    margin-bottom: 2px;
 }
 
-@keyframes pulse {
-    0% {
-        opacity: 1;
-    }
-
-    50% {
-        opacity: 0.6;
-    }
-
-    100% {
-        opacity: 1;
-    }
+/* Indicators */
+.indicators {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    height: 100%;
 }
 
-/* Task Completion Animation */
+.task-dots {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px;
+    margin-bottom: 2px;
+}
+
 .dot {
-    /* ... existing structure ... */
-    width: 8px;
-    height: 8px;
+    width: 6px;
+    /* Smaller dots */
+    height: 6px;
     border-radius: 50%;
     background-color: #333;
-    border: 1px solid #555;
-    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), background-color 0.2s;
-    cursor: pointer;
+    border: 0.5px solid #444;
+    transition: transform 0.2s;
 }
 
 .dot.completed {
     background-color: #4CAF50;
     border-color: #4CAF50;
-    animation: pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-@keyframes pop {
-    0% {
-        transform: scale(0.8);
-    }
-
-    50% {
-        transform: scale(1.4);
-    }
-
-    100% {
-        transform: scale(1);
-    }
 }
 
 .icons {
     display: flex;
-    gap: 4px;
+    gap: 2px;
     justify-content: flex-end;
     margin-top: auto;
-    font-size: 0.75rem;
-    padding-right: 2px;
+    font-size: 0.65rem;
+    /* Smaller icons */
+    line-height: 1;
+}
+
+.streak-broken {
+    color: #ff5252;
+    font-size: 0.7rem;
 }

@@ -66,8 +66,10 @@ export interface Task {
   locationCondition?: LocationCondition;
   /** Whether streak tracking is enabled */
   streakEnabled: boolean;
-  /** Task priority */
-  priority?: 'low' | 'medium' | 'high';
+  /** Task importance label */
+  importance?: 'low' | 'medium' | 'high';
+  /** Task display priority (lower number = higher priority) */
+  priority: number;
   /** Whether task is archived */
   isArchived: boolean;
   /** Creation timestamp (ISO date string) */

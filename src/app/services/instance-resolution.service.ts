@@ -199,19 +199,32 @@ export class InstanceResolutionService {
      * Sort task views by priority and title
      */
     private sortTaskViews(views: TaskInstanceView[]): TaskInstanceView[] {
-        const priorityOrder = { high: 0, medium: 1, low: 2 };
+        const importanceOrder = { high: 0, medium: 1, low: 2 };
 
         return views.sort((a, b) => {
-            // Sort by priority first
-            const aPriority = a.task.priority || 'low';
-            const bPriority = b.task.priority || 'low';
-            const priorityDiff = priorityOrder[aPriority] - priorityOrder[bPriority];
-
-            if (priorityDiff !== 0) {
-                return priorityDiff;
+            // 1. Sort by completed status (pending first)
+            if (a.status !== b.status) {
+                return a.status === 'completed' ? 1 : -1;
             }
 
-            // Then by title
+            // 2. Sort by numerical priority first (user defined order)
+            const aPriority = a.task.priority || 0;
+            const bPriority = b.task.priority || 0;
+
+            if (aPriority !== bPriority) {
+                return aPriority - bPriority;
+            }
+
+            // 3. Sort by importance level (semantic label)
+            const aImportance = a.task.importance || 'low';
+            const bImportance = b.task.importance || 'low';
+            const importanceDiff = importanceOrder[aImportance] - importanceOrder[bImportance];
+
+            if (importanceDiff !== 0) {
+                return importanceDiff;
+            }
+
+            // 4. Finally by title
             return a.task.title.localeCompare(b.task.title);
         });
     }

@@ -1,12 +1,15 @@
 <div class="calendar-container">
-    <header class="calendar-header">
-        <button (click)="previousMonth()" class="nav-btn">❮</button>
-        <h2>{{ currentMonthName() }}</h2>
-        <button (click)="nextMonth()" class="nav-btn">❯</button>
-    </header>
+    <div class="scrollable-content">
+        <app-stats></app-stats>
+        <header class="calendar-header">
+            <button (click)="previousMonth()" class="nav-btn">❮</button>
+            <h2>{{ currentMonthName() }}</h2>
+            <button (click)="nextMonth()" class="nav-btn">❯</button>
+        </header>
 
-    <div class="weekdays-grid">
-        <div *ngFor="let day of weekDays" class="weekday">{{ day }}</div>
+        <div class="weekdays-grid">
+            <div *ngFor="let day of weekDays" class="weekday">{{ day }}</div>
+        </div>
     </div>
 
     <div class="days-grid">
@@ -29,6 +32,8 @@
                 <div class="icons">
                     <span *ngIf="day.streakBroken" class="streak-broken" title="Streak Broken">⚡</span>
                     <span *ngIf="day.hasFinanceEntry" class="finance" title="Finance Entry">💰</span>
+                    <span *ngIf="day.hasWater" class="water" title="Water Tracked">💧</span>
+                    <span *ngIf="day.hasFruit" class="fruit" title="Fruit Tracked">🍎</span>
                     <span *ngIf="day.hasNote" class="note" title="Note">📝</span>
                 </div>
             </div>

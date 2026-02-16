@@ -4,29 +4,126 @@
         <h2>{{ date | date:'fullDate' }}</h2>
     </header>
 
+    <!-- Daily Summary Section -->
+    <div class="daily-summary">
+        <div class="summary-header">Today's Summary</div>
+        <div class="summary-grid">
+            <div class="summary-item">
+                <span class="label">Tasks</span>
+                <span class="value">{{ completedTasks().length }} / {{ tasks().length }}</span>
+            </div>
+            <div class="summary-item">
+                <span class="label">Water</span>
+                <span class="value">{{ dailyRecord().waterIntake || 0 }}ml 💧</span>
+            </div>
+            <div class="summary-item">
+                <span class="label">Fruits</span>
+                <span class="value">{{ fruitSummary() }} 🍎</span>
+            </div>
+            <div class="summary-item">
+                <span class="label">Sleep</span>
+                <span class="value">{{ dailyRecord().sleepHours || 0 }}h 😴</span>
+            </div>
+            <div class="summary-item">
+                <span class="label">Weight</span>
+                <span class="value">{{ dailyRecord().weight || '?' }}kg ⚖️</span>
+            </div>
+        </div>
+        <div class="note-preview" *ngIf="notePreview()">
+            <span class="label">Note:</span> {{ notePreview() }}
+        </div>
+    </div>
+
     <div class="task-list">
         <div *ngIf="tasks().length === 0" class="empty-state">
             <p>No tasks for today. Enjoy! 🎉</p>
         </div>
 
-        <div *ngFor="let taskView of tasks()" class="task-item" [class.completed]="isCompleted(taskView)"
-            (click)="toggleTask(taskView)">
-
-            <div class="checkbox">
-                <span *ngIf="isCompleted(taskView)">✓</span>
-            </div>
-
-            <div class="task-content">
-                <div class="task-title">{{ taskView.task.title }}</div>
-                <div class="task-meta">
-                    <span *ngIf="taskView.task.priority" class="priority-tag" [ngClass]="taskView.task.priority">
-                        {{ taskView.task.priority }}
-                    </span>
-                    <span *ngIf="taskView.currentStreak" class="streak-tag">
-                        🔥 {{ taskView.currentStreak }}
-                    </span>
+        <!-- Pending Tasks (Draggable) -->
+        <div cdkDropList (cdkDropListDropped)="drop($event)" class="drag-list">
+            <div *ngFor="let taskView of pendingTasks()" cdkDrag class="task-item" (click)="toggleTask(taskView)">
+                <div class="drag-handle" cdkDragHandle (click)="$event.stopPropagation()">
+                    ⋮⋮
+                </div>
+                <div class="checkbox">
+                    <span></span>
+                </div>
+                <div class="task-content">
+                    <div class="task-title">{{ taskView.task.title }}</div>
+                    <div class="task-meta">
+                        <span *ngIf="taskView.task.importance" class="importance-tag"
+                            [ngClass]="taskView.task.importance">
+                            {{ taskView.task.importance }}
+                        </span>
+                        <span *ngIf="taskView.currentStreak" class="streak-tag">
+                            🔥 {{ taskView.currentStreak }}
+                        </span>
+                    </div>
                 </div>
             </div>
+        </div>
+
+        <!-- Completed Tasks (Static) -->
+        <div class="completed-section" *ngIf="completedTasksList().length > 0">
+            <div class="section-divider">Completed</div>
+            <div *ngFor="let taskView of completedTasksList()" class="task-item completed"
+                (click)="toggleTask(taskView)">
+                <div class="checkbox">
+                    <span>✓</span>
+                </div>
+                <div class="task-content">
+                    <div class="task-title">{{ taskView.task.title }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Daily Tracking Section -->
+    <div class="tracking-card">
+        <h3>Daily Tracking</h3>
+
+        <!-- Water -->
+        <div class="track-row">
+            <div class="track-label">
+                <span>💧 Water</span>
+                <span class="value">{{ dailyRecord().waterIntake || 0 }} ml</span>
+            </div>
+            <div class="track-controls">
+                <button (click)="updateWater(-250)">-250</button>
+                <button (click)="updateWater(250)" class="add-btn">+250</button>
+            </div>
+        </div>
+
+        <!-- Fruit -->
+        <div class="track-group">
+            <div class="track-label">🍎 Fruits</div>
+            <div class="chips-container">
+                <div *ngFor="let fruit of fruitOptions" class="chip" [class.selected]="isFruitSelected(fruit)"
+                    (click)="toggleFruit(fruit)">
+                    {{ fruit }}
+                </div>
+            </div>
+        </div>
+
+        <!-- Sleep & Weight -->
+        <div class="dual-row">
+            <div class="track-input-group">
+                <label>😴 Sleep (hrs)</label>
+                <input type="number" [ngModel]="dailyRecord().sleepHours" (ngModelChange)="updateSleep($event)"
+                    step="0.5" min="0">
+            </div>
+            <div class="track-input-group">
+                <label>⚖️ Weight (kg)</label>
+                <input type="number" [ngModel]="dailyRecord().weight" (ngModelChange)="updateWeight($event)" step="0.1"
+                    min="0">
+            </div>
+        </div>
+
+        <!-- Notes -->
+        <div class="track-group">
+            <label>📝 Daily Note</label>
+            <textarea [ngModel]="dailyRecord().notes" (ngModelChange)="updateNotes($event)"
+                placeholder="How was your day?" rows="3"></textarea>
         </div>
     </div>
 </div>

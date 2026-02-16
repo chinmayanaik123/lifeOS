@@ -14,6 +14,10 @@ export interface CalendarDayView {
     hasNote: boolean;
     /** Whether finance entries exist for this day */
     hasFinanceEntry: boolean;
+    /** Whether water intake was tracked */
+    hasWater: boolean;
+    /** Whether fruit was tracked */
+    hasFruit: boolean;
     /** Whether any streak was broken on this day */
     streakBroken: boolean;
     /** List of tasks for this day (for quick completion) */

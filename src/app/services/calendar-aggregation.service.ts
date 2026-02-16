@@ -79,34 +79,31 @@ export class CalendarAggregationService {
     /**
      * Build view for a single day
      */
+    // ... inside buildDayView
     private async buildDayView(
         date: string,
         allTasks: any[],
         instances: any[],
-        hasRecord: boolean,
+        dailyRecord: any | undefined, // Changed from hasRecord boolean
         hasFinance: boolean,
         currentLocation: LocationType
     ): Promise<CalendarDayView> {
-        // Filter tasks that occur on this date
+        // ... (filtering tasks remains same)
         const tasksForDate = allTasks.filter(task =>
             this.recurrenceEngine.doesTaskOccurOnDate(task, date)
         );
 
-        // Filter by location
         const locationFilteredTasks = this.locationFilter.filterTasksByLocation(
             tasksForDate,
             currentLocation
         );
 
         const tasksTotal = locationFilteredTasks.length;
-
-        // Create instance map for quick lookup
         const instanceMap = new Map(instances.map(i => [i.taskId, i]));
 
-        // Count completed tasks and build task views
         let tasksCompleted = 0;
         let streakBroken = false;
-        const taskViews: any[] = []; // using any temporarily to avoid import issues if models not updated yet, but ideally typed
+        const taskViews: any[] = [];
 
         for (const task of locationFilteredTasks) {
             const instance = instanceMap.get(task.id);
@@ -115,14 +112,12 @@ export class CalendarAggregationService {
             if (isCompleted) {
                 tasksCompleted++;
             } else if (task.streakEnabled) {
-                // Check if streak was broken
                 const isBreak = await this.streakEngine.isStreakBroken(task.id, date);
                 if (isBreak) {
                     streakBroken = true;
                 }
             }
 
-            // Add to task views
             taskViews.push({
                 id: instance?.id || `${task.id}_${date}`,
                 taskId: task.id,
@@ -134,21 +129,22 @@ export class CalendarAggregationService {
             });
         }
 
-        // Generate icons
-        const icons = this.generateIcons(
-            tasksCompleted,
-            tasksTotal,
-            hasRecord,
-            hasFinance,
-            streakBroken
-        );
+        // Determine tracking flags
+        const hasNote = !!dailyRecord?.notes;
+        const hasWater = (dailyRecord?.waterIntake || 0) > 0;
+        const hasFruit = (dailyRecord?.fruitIntake?.length || 0) > 0;
+
+        // Generate icons (keeping existing logic + new ones if needed, though we use flags mostly)
+        const icons: string[] = []; // Simplified for now as we use flags
 
         return {
             date,
             tasksCompleted,
             tasksTotal,
-            hasNote: hasRecord,
+            hasNote,
             hasFinanceEntry: hasFinance,
+            hasWater,
+            hasFruit,
             streakBroken,
             icons,
             tasks: taskViews

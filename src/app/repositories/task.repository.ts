@@ -38,7 +38,25 @@ export class TaskRepository {
      * Create a new task
      */
     async create(task: Task): Promise<string> {
+        if (task.priority === undefined) {
+            const allTasks = await this.getAll();
+            const maxPriority = allTasks.reduce((max, t) => Math.max(max, t.priority || 0), 0);
+            task.priority = maxPriority + 1;
+        }
         return this.storage.put('tasks', task);
+    }
+
+    /**
+     * Update priorities for a list of tasks
+     */
+    async updatePriorities(tasks: { id: string, priority: number }[]): Promise<void> {
+        for (const update of tasks) {
+            const task = await this.getById(update.id);
+            if (task) {
+                task.priority = update.priority;
+                await this.update(task);
+            }
+        }
     }
 
     /**

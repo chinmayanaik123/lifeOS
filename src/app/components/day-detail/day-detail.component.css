@@ -1,7 +1,8 @@
 .day-detail-container {
     padding: 16px;
     background-color: #121212;
-    height: 100%;
+    min-height: 100%;
+    /* Ensure background covers full height */
 }
 
 .detail-header {
@@ -30,7 +31,8 @@ h2 {
 .task-list {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 8px;
+    padding-bottom: 20px;
 }
 
 .empty-state {
@@ -94,7 +96,7 @@ h2 {
     font-size: 0.75rem;
 }
 
-.priority-tag {
+.importance-tag {
     padding: 2px 6px;
     border-radius: 4px;
     text-transform: capitalize;
@@ -102,16 +104,236 @@ h2 {
     color: #aaa;
 }
 
-.priority-tag.high {
+.importance-tag.high {
     background-color: rgba(244, 67, 54, 0.2);
     color: #f44336;
 }
 
-.priority-tag.medium {
+.importance-tag.medium {
     background-color: rgba(255, 152, 0, 0.2);
     color: #ff9800;
 }
 
 .streak-tag {
     color: #ff9800;
+}
+
+/* Drag & Drop Styles */
+.drag-handle {
+    cursor: grab;
+    color: #444;
+    padding-right: 8px;
+    font-size: 1.2rem;
+    user-select: none;
+    display: flex;
+    align-items: center;
+}
+
+.drag-handle:active {
+    cursor: grabbing;
+}
+
+.cdk-drag-preview {
+    box-sizing: border-box;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    background-color: #252525;
+    opacity: 0.9;
+}
+
+.cdk-drag-placeholder {
+    opacity: 0;
+}
+
+.cdk-drag-animating {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.drag-list.cdk-drop-list-dragging .task-item:not(.cdk-drag-placeholder) {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.section-divider {
+    font-size: 0.75rem;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 16px 0 8px 8px;
+    font-weight: 600;
+}
+
+/* Daily Summary Section */
+.daily-summary {
+    background: linear-gradient(135deg, #1e1e1e 0%, #252525 100%);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 24px;
+    border: 1px solid #333;
+}
+
+.summary-header {
+    font-size: 0.85rem;
+    color: #bb86fc;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+    font-weight: 600;
+}
+
+.summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.summary-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.summary-item .label {
+    font-size: 0.75rem;
+    color: #888;
+}
+
+.summary-item .value {
+    font-size: 1rem;
+    color: #ffffff;
+    font-weight: 500;
+}
+
+.note-preview {
+    font-size: 0.9rem;
+    color: #bbb;
+    padding-top: 12px;
+    border-top: 1px solid #333;
+    line-height: 1.4;
+}
+
+.note-preview .label {
+    color: #888;
+    margin-right: 4px;
+    font-weight: 500;
+}
+
+/* Tracking Card */
+.tracking-card {
+    background-color: #1e1e1e;
+    border-radius: 12px;
+    padding: 16px;
+    margin-top: 16px;
+    border-top: 1px solid #333;
+}
+
+.tracking-card h3 {
+    margin: 0 0 16px 0;
+    font-size: 1.1rem;
+    color: #bb86fc;
+}
+
+.track-row,
+.track-group {
+    margin-bottom: 16px;
+}
+
+.track-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    color: #e0e0e0;
+    font-size: 0.95rem;
+}
+
+.track-label .value {
+    color: #81d4fa;
+    font-weight: 600;
+}
+
+.track-controls {
+    display: flex;
+    gap: 10px;
+}
+
+.track-controls button {
+    flex: 1;
+    background-color: #333;
+    border: none;
+    color: #fff;
+    padding: 8px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.track-controls button.add-btn {
+    background-color: rgba(3, 218, 198, 0.2);
+    color: #03dac6;
+}
+
+/* Chips */
+.chips-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.chip {
+    background-color: #2c2c2c;
+    padding: 6px 12px;
+    border-radius: 16px;
+    font-size: 0.85rem;
+    color: #aaa;
+    cursor: pointer;
+    border: 1px solid #333;
+    transition: all 0.2s;
+}
+
+.chip.selected {
+    background-color: rgba(187, 134, 252, 0.2);
+    border-color: #bb86fc;
+    color: #bb86fc;
+}
+
+/* Dual Input Row */
+.dual-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.track-input-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.track-input-group label,
+.track-group label {
+    font-size: 0.85rem;
+    color: #888;
+}
+
+.track-input-group input,
+textarea {
+    background-color: #2c2c2c;
+    border: 1px solid #333;
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-family: inherit;
+    width: 100%;
+    box-sizing: border-box;
+    outline: none;
+}
+
+.track-input-group input:focus,
+textarea:focus {
+    border-color: #bb86fc;
+}
+
+textarea {
+    resize: vertical;
 }

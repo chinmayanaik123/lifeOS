@@ -107,7 +107,8 @@ export class AddTaskComponent {
           recurrence: recurrence,
           streakEnabled: formValue.streakEnabled,
           isArchived: false,
-          createdAt: new Date().toISOString()
+          createdAt: new Date().toISOString(),
+          priority: 0 // Will be auto-calculated in repository
         };
 
         // Optional: Add Location Condition

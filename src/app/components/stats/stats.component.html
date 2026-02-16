@@ -1,0 +1,56 @@
+<div class="stats-container">
+    <!-- Smart Insights -->
+    <div class="insights-container" *ngIf="insights().length > 0">
+        <div *ngFor="let insight of insights()" class="insight-pill" [ngClass]="insight.type">
+            {{ insight.text }}
+        </div>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-value">{{ currentStreak() }}</div>
+            <div class="stat-label">Current Streak 🔥</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">{{ longestStreak() }}</div>
+            <div class="stat-label">Longest Streak 🏆</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">{{ completionRate() }}%</div>
+            <div class="stat-label">7-Day Completion</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">{{ avgWaterValue() }}ml</div>
+            <div class="stat-label">Avg Water (7d) 💧</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">{{ weightTrend() }}</div>
+            <div class="stat-label">Weight Trend</div>
+        </div>
+    </div>
+
+    <!-- Visualizations -->
+    <div class="visualizations">
+        <div class="viz-card">
+            <div class="viz-header">7-Day Water</div>
+            <div class="bar-chart">
+                <div *ngFor="let entry of waterHistory()" class="bar-wrapper" [title]="entry.amount + 'ml'">
+                    <div class="bar" [style.height.%]="entry.percentage"></div>
+                    <div class="bar-label">{{ entry.day }}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="viz-card">
+            <div class="viz-header">7-Day Progress</div>
+            <div class="dot-chart">
+                <div *ngFor="let day of completionHistory()" class="dot-wrapper"
+                    [title]="day.percentage + '% completed'">
+                    <div class="dot" [style.opacity]="(day.percentage / 100) + 0.2"
+                        [class.full]="day.percentage === 100"></div>
+                    <div class="dot-label">{{ day.day }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

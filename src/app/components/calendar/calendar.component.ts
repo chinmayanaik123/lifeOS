@@ -5,11 +5,12 @@ import { CalendarAggregationService } from '../../services/calendar-aggregation.
 import { InstanceResolutionService } from '../../services/instance-resolution.service';
 import { SettingsRepository } from '../../repositories/settings.repository';
 import { CalendarDayView, TaskInstanceView } from '../../models';
+import { StatsComponent } from '../stats/stats.component';
 
 @Component({
   selector: 'app-calendar',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, StatsComponent],
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.css']
 })

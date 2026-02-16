@@ -21,8 +21,13 @@
 .content {
     flex: 1;
     overflow-y: auto;
+    /* Allow scrolling */
+    position: relative;
+    display: flex;
+    flex-direction: column;
     padding-bottom: 60px;
-    /* Space for bottom nav */
+    /* Space for absolute bottom nav */
+    box-sizing: border-box;
 }
 
 .bottom-nav {
